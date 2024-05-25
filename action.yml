@@ -5,10 +5,7 @@ on:
     inputs:
       package:
         required: true
-        type: string
       use-last-tag:
-        type: boolean
-        required: false
         default: false
     outputs:
       changed:
