@@ -13,7 +13,7 @@ outputs:
     description: "Says whether the package has changed according to its dependencies"
     value: ${{ steps.changedStep.outputs.changed }}
 runs:
-  using: composite:
+  using: composite
   steps:
     - uses: actions/checkout@v3
       with:
