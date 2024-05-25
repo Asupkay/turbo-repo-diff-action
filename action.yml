@@ -1,4 +1,5 @@
 name: Turborepo Diff Check
+description: Run a diff check against a specific package and its dependencies in turborepo
 on:
   workflow_call:
     inputs:
