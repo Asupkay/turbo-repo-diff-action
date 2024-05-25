@@ -16,10 +16,12 @@ runs:
   using: composite
   steps:
     - uses: actions/checkout@v3
+      shell: bash
       with:
         fetch-depth: 0
     - name: Check for changes
       id: changedStep
+      shell: bash
       run: |
         set +e
 
