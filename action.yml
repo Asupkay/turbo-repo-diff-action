@@ -1,7 +1,7 @@
 name: Turborepo Diff Check
 description: Run a diff check against a specific package and its dependencies in turborepo
 branding:
-  icon: check-square
+  icon: git-branch
   color: gray-dark
 inputs:
   package:
