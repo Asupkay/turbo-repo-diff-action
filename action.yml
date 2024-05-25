@@ -39,5 +39,3 @@ runs:
         else
           echo "changed=false" >> $GITHUB_OUTPUT
         fi
-
-        cat $GITHUB_OUTPUT
