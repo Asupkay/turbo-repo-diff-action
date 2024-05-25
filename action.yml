@@ -1,5 +1,8 @@
 name: Turborepo Diff Check
 description: Run a diff check against a specific package and its dependencies in turborepo
+branding:
+  icon: check-square
+  color: gray-dark
 on:
   workflow_call:
     inputs:
