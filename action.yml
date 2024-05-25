@@ -3,45 +3,40 @@ description: Run a diff check against a specific package and its dependencies in
 branding:
   icon: check-square
   color: gray-dark
-on:
-  workflow_call:
-    inputs:
-      package:
-        required: true
-      use-last-tag:
-        default: false
-    outputs:
-      changed:
-        description: "Says whether the package has changed according to its dependencies"
-        value: ${{ jobs.check-diff.outputs.changed }}
-jobs:
-  check-diff:
-    runs-on: ubuntu-latest
-    outputs:
-      changed: ${{ steps.changedStep.outputs.changed }}
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Check for changes
-        id: changedStep
-        run: |
-          set +e
+inputs:
+  package:
+    required: true
+  use-last-tag:
+    default: false
+outputs:
+  changed:
+    description: "Says whether the package has changed according to its dependencies"
+    value: ${{ steps.changedStep.outputs.changed }}
+runs:
+  runs-on: composite:
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Check for changes
+      id: changedStep
+      run: |
+        set +e
 
-          if [ "${{ inputs.use-last-tag }}" = "false" ]; then
-            npx turbo-ignore ${{ inputs.package }}
-          else
-            LAST_TAG=$(git describe --tags --abbrev=0)
-            npx turbo-ignore ${{ inputs.package }} --fallback=tags/$LAST_TAG
-          fi
-          exit_code=$?
+        if [ "${{ inputs.use-last-tag }}" = "false" ]; then
+          npx turbo-ignore ${{ inputs.package }}
+        else
+          LAST_TAG=$(git describe --tags --abbrev=0)
+          npx turbo-ignore ${{ inputs.package }} --fallback=tags/$LAST_TAG
+        fi
+        exit_code=$?
 
-          set -e
+        set -e
 
-          if [ $exit_code -eq "1" ]; then
-            echo "changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "changed=false" >> $GITHUB_OUTPUT
-          fi
+        if [ $exit_code -eq "1" ]; then
+          echo "changed=true" >> $GITHUB_OUTPUT
+        else
+          echo "changed=false" >> $GITHUB_OUTPUT
+        fi
 
-          cat $GITHUB_OUTPUT
+        cat $GITHUB_OUTPUT
